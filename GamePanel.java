@@ -14,12 +14,13 @@ public class GamePanel extends JPanel implements KeyListener {
 
     public GamePanel(){
         background = new JPanel();
-        setPreferredSize(new Dimension(600,600));
         setBackground(Color.lightGray);
         screenWidth = background.getWidth();
         screenHeight = background.getHeight();
+        addKeyListener(this);
+        setFocusable(true);
+        setPreferredSize(new Dimension(600,600));
         GameLoop gameLoop = new GameLoop();
-
         new Thread(gameLoop).start();
     }
 
@@ -55,7 +56,11 @@ public class GamePanel extends JPanel implements KeyListener {
 
     }
     public void updateGameObjects() {
-
+        bird.BirdMovement();
+        if(bird.isJump()==true){
+            bird.BirdJump();
+            bird.setJump(false);
+        }
     }
 
     public void updateScreen() { // repaint Screen
@@ -72,9 +77,9 @@ public class GamePanel extends JPanel implements KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent keyEvent) {
-        pressedKey = keyEvent.getKeyCode();
-        if(pressedKey== KeyEvent.VK_W){
+    public void keyPressed(KeyEvent event) {
+        pressedKey = event.getKeyCode();
+        if(pressedKey== KeyEvent.VK_UP){
             bird.setJump(true);
         }
     }
